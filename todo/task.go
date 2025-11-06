@@ -7,21 +7,22 @@ type Task struct {
 	Description string
 	Completed   bool
 
-	CreatedAt time.Time
-	DoneAt    *time.Time
+	CreatedAt    time.Time
+	CompleteTime *time.Time
 }
 
 func NewTask(title, description string) *Task {
 	return &Task{
-		Title:       title,
-		Description: description,
-		Completed:   false,
-		CreatedAt:   time.Now(),
-		DoneAt:      nil,
+		Title:        title,
+		Description:  description,
+		Completed:    false,
+		CreatedAt:    time.Now(),
+		CompleteTime: nil,
 	}
 }
 
-func (t *Task) Done() {
+func (t *Task) Complete() {
+	now := time.Now()
 	t.Completed = true
-	t.DoneAt = &time.Time{Time: time.Now()}
+	t.CompleteTime = &now
 }
