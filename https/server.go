@@ -30,9 +30,7 @@ func (s *HTTPServer) StartServer() error {
 		if errors.Is(err, http.ErrServerClosed) {
 			return nil
 		}
-
 		return err
 	}
-
 	return nil
 }
