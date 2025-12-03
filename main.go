@@ -9,9 +9,9 @@ import (
 func main() {
 	todo := todo.NewList()
 	httpHandlers := https.NewHTTPHandlers(todo)
-	httpSerer := https.NewHTTPServer(httpHandlers)
+	httpServer := https.NewHTTPServer(httpHandlers)
 
-	if err := httpSerer.StartServer(); err != nil {
+	if err := httpServer.StartServer(); err != nil {
 		fmt.Println("Failed", err)
 	}
 }
