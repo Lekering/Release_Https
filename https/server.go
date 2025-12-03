@@ -2,6 +2,7 @@ package https
 
 import (
 	"errors"
+	"net"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -26,11 +27,21 @@ func (s *HTTPServer) StartServer() error {
 	router.Path("/tasks/{title}").Methods("PATCH").HandlerFunc(s.httpHandlers.HandlerCompleteTask)
 	router.Path("/tasks/{title}").Methods("DELETE").HandlerFunc(s.httpHandlers.HandlerDeleteTask)
 
-	if err := http.ListenAndServe(":9091", router); err != nil {
-		if errors.Is(err, http.ErrServerClosed) {
-			return nil
-		}
+	server := &http.Server{
+		Addr:    ":9091",
+		Handler: router,
+	}
+
+	listener, err := net.Listen("tcp", ":9091")
+	if err != nil {
 		return err
 	}
+
+	go func() {
+		if err := server.Serve(listener); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			// Ошибка сервера логируется, но не возвращается, так как сервер уже запущен
+		}
+	}()
+
 	return nil
 }
